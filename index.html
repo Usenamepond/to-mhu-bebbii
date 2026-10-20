@@ -17,62 +17,152 @@ h1{font-size:clamp(27px,6vw,42px);line-height:1.45;margin:0 0 12px;font-weight:6
 .curtain {
   position: fixed;
   inset: 0;
-  z-index: 999;
-  display: flex;
+  z-index: 1000;
   overflow: hidden;
+  pointer-events: auto;
+  background:
+    radial-gradient(circle at 50% 15%, #fff7fc, transparent 55%),
+    #f8b5d6;
+  animation: curtainGlow 3s ease-in-out infinite alternate;
 }
 
 .curtain-panel {
-  width: 50%;
-  height: 100%;
-  background: repeating-linear-gradient(
-    90deg,
-    #a92f59 0px,
-    #d6537e 25px,
-    #f18eae 50px,
-    #b93664 75px
-  );
-  box-shadow: inset 0 0 35px #76203f66;
-  transition: transform 2s cubic-bezier(.7, 0, .3, 1);
+  position: absolute;
+  top: -2%;
+  bottom: -2%;
+  width: 53%;
+  overflow: hidden;
+  transition: transform 2.4s cubic-bezier(.77, 0, .18, 1);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #e978ad 0%,
+      #ffc9e2 8%,
+      #f28cbd 16%,
+      #ffe4f1 24%,
+      #e879ad 33%
+    );
+  box-shadow:
+    inset 0 0 35px #b8427c55,
+    inset 8px 0 15px #fff8,
+    0 0 25px #d75d9c55;
+}
+
+.curtain-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 8%,
+      #fff5 9%,
+      #b93c7c22 12%,
+      transparent 17%
+    ),
+    linear-gradient(180deg, #fff4 0%, transparent 40%, #bd477c22);
 }
 
 .curtain-panel.left {
-  border-right: 4px solid #ffc4d7;
+  left: 0;
+  border-right: 4px solid #fff0fa;
+  border-radius: 0 0 35% 0 / 0 0 7% 0;
 }
 
 .curtain-panel.right {
-  border-left: 4px solid #ffc4d7;
+  right: 0;
+  border-left: 4px solid #fff0fa;
+  border-radius: 0 0 0 35% / 0 0 0 7%;
 }
 
-.curtain.open .left {
-  transform: translateX(-100%);
-}
-
-.curtain.open .right {
-  transform: translateX(100%);
-}
-
+/* ไข่มุกและลูกไม้ด้านบน */
 .curtain-top {
   position: absolute;
+  z-index: 3;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 45px;
-  background: linear-gradient(#9c244d, #d9517c);
-  color: #ffe5bb;
+  left: -2%;
+  width: 104%;
+  height: 95px;
+  padding-top: 10px;
   text-align: center;
-  font-size: 23px;
+  color: #fff;
+  font-size: clamp(22px, 4vw, 38px);
   letter-spacing: 8px;
-  padding-top: 5px;
-  z-index: 2;
+  text-shadow: 0 0 12px #fff, 0 2px 8px #d94e91;
+  background:
+    radial-gradient(ellipse at top, #fff7fc, #f7a8d0 72%, transparent 73%);
+  border-bottom: 4px dotted #fff4fb;
+  filter: drop-shadow(0 5px 8px #bd4b8055);
+  transition: transform 1.2s ease;
 }
+
+.curtain-top::after {
+  content: "🎀";
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(42px, 7vw, 65px);
+  filter: drop-shadow(0 4px 5px #c94f8a66);
+}
+
+/* โบว์ประดับตรงกลางผ้าม่านแต่ละฝั่ง */
+.curtain-panel::after {
+  content: "🎀";
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(48px, 8vw, 90px);
+  filter: drop-shadow(0 5px 8px #9e315b55);
+}
+
+/* แสงระยิบระยับ */
+.curtain {
+  background-image:
+    radial-gradient(circle at 10% 22%, #fff 0 1px, transparent 3px),
+    radial-gradient(circle at 90% 28%, #fff 0 2px, transparent 4px),
+    radial-gradient(circle at 20% 75%, #fff 0 1px, transparent 3px),
+    radial-gradient(circle at 82% 80%, #fff 0 2px, transparent 4px);
+  background-size: 150px 170px, 190px 210px, 170px 180px, 220px 200px;
+}
+
+@keyframes curtainGlow {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.08); }
+}
+
+/* เปิดม่านแยกซ้ายและขวา */
 .curtain.open {
   pointer-events: none;
+  background: transparent;
+  animation: none;
+}
+
+.curtain.open .curtain-panel.left {
+  transform: translateX(-105%);
+}
+
+.curtain.open .curtain-panel.right {
+  transform: translateX(105%);
 }
 
 .curtain.open .curtain-top {
-  transform: translateY(-100%);
-  transition: transform 1s ease;
+  transform: translateY(-120%);
+}
+
+@media (max-width: 480px) {
+  .curtain-top {
+    height: 75px;
+    letter-spacing: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .curtain-panel,
+  .curtain-top {
+    transition-duration: .5s;
+  }
 }
 </style>
 </head>
@@ -83,9 +173,6 @@ h1{font-size:clamp(27px,6vw,42px);line-height:1.45;margin:0 0 12px;font-weight:6
   <div class="curtain-top">♥ ✧ ♥ ✧ ♥ ✧ ♥</div>
 </div>
 
-<button id="curtainButton"
-  style="position:fixed;z-index:1001;top:60px;left:50%;transform:translateX(-50%);padding:12px 24px;border:0;border-radius:30px;background:#d94e7f;color:white;font-size:16px;cursor:pointer;">
-  🎀 เปิดผ้าม่าน</button>
 <button class="music" id="musicBtn" aria-label="เปิดเพลง">♫ เปิดเพลง</button>
 <audio id="song" loop src="love-song.mp3"></audio>
 <section class="screen active" id="s1"><div class="panel"><span class="big-heart">🎀</span><h1>ปอนด์มีอะไรให้บี๋ดู 。。。</h1><p>ช่วงนี้ทะเลาะกันบ่อยเลยทำอันนี้มาให้<br>หวังว่าจะถูกใจนะ ❁</p><button class="btn" onclick="showScreen(2)">กดตรงเน้ 。。。</button><p class="tiny">豚のために 🐽♡</p></div></section>
@@ -97,12 +184,12 @@ function openLetter(){document.getElementById('env').classList.add('open');setTi
 function heart(){const el=document.createElement('span');el.className='float';el.textContent=['💗','💖','🐽','✨','🌸'][Math.floor(Math.random()*5)];el.style.left=Math.random()*100+'vw';el.style.fontSize=(18+Math.random()*22)+'px';el.style.animationDuration=(4+Math.random()*4)+'s';document.body.appendChild(el);setTimeout(()=>el.remove(),8500)}
 let heartTimer=setInterval(heart,850);function burstHearts(){for(let i=0;i<18;i++)setTimeout(heart,i*90)}
 const song=document.getElementById('song'),musicBtn=document.getElementById('musicBtn');musicBtn.addEventListener('click',async()=>{try{if(song.paused){await song.play();musicBtn.textContent='♫ ปิดเพลง'}else{song.pause();musicBtn.textContent='♫ เปิดเพลง'}}catch(e){alert('ถ้าต้องการเปิดเพลง ให้อัปโหลดไฟล์เพลงชื่อ love-song.mp3 ไว้ข้าง ๆ index.html ก่อนนะ 💗')}});
-const curtainButton = document.getElementById('curtainButton');
 const curtainElement = document.getElementById('curtain');
 
-curtainButton.addEventListener('click', () => {
-  curtainElement.classList.add('open');
-  curtainButton.style.display = 'none';
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    curtainElement.classList.add('open');
+  }, 1800);
 });
 </script>
 </body>

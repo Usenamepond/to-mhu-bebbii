@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>จดหมายถึงคนพิเศษ 💗</title>
+<title>จดหมายถึงmhu ๋ 🐽</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Mali:wght@300;400;500;600&display=swap');
 :root{--pink:#ffb6d9;--deep:#f06aa7;--ink:#7e365c;--cream:#fff7fb}
@@ -25,7 +25,7 @@ h1{font-size:clamp(27px,6vw,42px);line-height:1.45;margin:0 0 12px;font-weight:6
 <script>
 function showScreen(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('s'+n).classList.add('active');if(n===3)burstHearts()}
 function openLetter(){document.getElementById('env').classList.add('open');setTimeout(()=>showScreen(3),550)}
-function heart(){const el=document.createElement('span');el.className='float';el.textContent=['💗','💖','💕','✨','🌸'][Math.floor(Math.random()*5)];el.style.left=Math.random()*100+'vw';el.style.fontSize=(18+Math.random()*22)+'px';el.style.animationDuration=(4+Math.random()*4)+'s';document.body.appendChild(el);setTimeout(()=>el.remove(),8500)}
+function heart(){const el=document.createElement('span');el.className='float';el.textContent=['💗','💖','🐽','✨','🌸'][Math.floor(Math.random()*5)];el.style.left=Math.random()*100+'vw';el.style.fontSize=(18+Math.random()*22)+'px';el.style.animationDuration=(4+Math.random()*4)+'s';document.body.appendChild(el);setTimeout(()=>el.remove(),8500)}
 let heartTimer=setInterval(heart,850);function burstHearts(){for(let i=0;i<18;i++)setTimeout(heart,i*90)}
 const song=document.getElementById('song'),musicBtn=document.getElementById('musicBtn');musicBtn.addEventListener('click',async()=>{try{if(song.paused){await song.play();musicBtn.textContent='♫ ปิดเพลง'}else{song.pause();musicBtn.textContent='♫ เปิดเพลง'}}catch(e){alert('ถ้าต้องการเปิดเพลง ให้อัปโหลดไฟล์เพลงชื่อ love-song.mp3 ไว้ข้าง ๆ index.html ก่อนนะ 💗')}});
 </script>

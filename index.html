@@ -14,9 +14,78 @@ h1{font-size:clamp(27px,6vw,42px);line-height:1.45;margin:0 0 12px;font-weight:6
 .big-heart{font-size:66px;display:block;animation:beat 1.25s infinite;margin:0 0 8px}.envelope-wrap{cursor:pointer;filter:drop-shadow(0 15px 15px #c95b8d25);margin:22px auto 12px;width:220px;height:155px;position:relative}.envelope{position:absolute;inset:25px 0 0;background:#ffb5d5;border-radius:9px;overflow:hidden}.envelope:before{content:"";position:absolute;inset:0;background:#ffd1e5;clip-path:polygon(0 0,50% 60%,100% 0)}.envelope:after{content:"";position:absolute;inset:0;background:#f78dbb;clip-path:polygon(0 100%,50% 45%,100% 100%)}.flap{position:absolute;z-index:2;top:25px;left:0;width:100%;height:90px;background:#ffcae0;clip-path:polygon(0 0,100% 0,50% 78%);transform-origin:top;transition:transform .7s}.seal{position:absolute;z-index:3;top:77px;left:calc(50% - 18px);font-size:34px;transition:opacity .3s}.envelope-wrap.open .flap{transform:rotateX(180deg)}.envelope-wrap.open .seal{opacity:0}.letter{background:linear-gradient(180deg,#fffdfd,#fff3f8);border:2px solid #ffd0e3;border-radius:18px;padding:25px 22px;box-shadow:0 14px 35px #b95a8422;text-align:left;white-space:pre-wrap;font-size:clamp(18px,4vw,23px);line-height:1.95;max-height:55vh;overflow:auto}.letter h2{text-align:center;margin:0 0 15px;font-size:clamp(23px,5vw,30px)}.actions{margin-top:18px}.float{position:fixed;z-index:2;bottom:-50px;pointer-events:none;animation:floatUp linear forwards;opacity:.8}.music{position:fixed;right:14px;top:14px;z-index:4;background:#fff9;color:#c74c88;border:1px solid #fff;padding:9px 13px;border-radius:999px;font-family:inherit;cursor:pointer}
 @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.13)}}@keyframes floatUp{to{transform:translateY(-115vh) rotate(30deg);opacity:0}}
 @media(max-width:480px){.panel{padding:25px 17px}.screen{padding:15px}.envelope-wrap{transform:scale(.9)}}
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  overflow: hidden;
+}
+
+.curtain-panel {
+  width: 50%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    #a92f59 0px,
+    #d6537e 25px,
+    #f18eae 50px,
+    #b93664 75px
+  );
+  box-shadow: inset 0 0 35px #76203f66;
+  transition: transform 2s cubic-bezier(.7, 0, .3, 1);
+}
+
+.curtain-panel.left {
+  border-right: 4px solid #ffc4d7;
+}
+
+.curtain-panel.right {
+  border-left: 4px solid #ffc4d7;
+}
+
+.curtain.open .left {
+  transform: translateX(-100%);
+}
+
+.curtain.open .right {
+  transform: translateX(100%);
+}
+
+.curtain-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 45px;
+  background: linear-gradient(#9c244d, #d9517c);
+  color: #ffe5bb;
+  text-align: center;
+  font-size: 23px;
+  letter-spacing: 8px;
+  padding-top: 5px;
+  z-index: 2;
+}
+.curtain.open {
+  pointer-events: none;
+}
+
+.curtain.open .curtain-top {
+  transform: translateY(-100%);
+  transition: transform 1s ease;
+}
 </style>
 </head>
 <body>
+<div class="curtain" id="curtain">
+  <div class="curtain-panel left"></div>
+  <div class="curtain-panel right"></div>
+  <div class="curtain-top">♥ ✧ ♥ ✧ ♥ ✧ ♥</div>
+</div>
+
+<button id="curtainButton"
+  style="position:fixed;z-index:1001;top:60px;left:50%;transform:translateX(-50%);padding:12px 24px;border:0;border-radius:30px;background:#d94e7f;color:white;font-size:16px;cursor:pointer;">
+  🎀 เปิดผ้าม่าน</button>
 <button class="music" id="musicBtn" aria-label="เปิดเพลง">♫ เปิดเพลง</button>
 <audio id="song" loop src="love-song.mp3"></audio>
 <section class="screen active" id="s1"><div class="panel"><span class="big-heart">🎀</span><h1>ปอนด์มีอะไรให้บี๋ดู 。。。</h1><p>ช่วงนี้ทะเลาะกันบ่อยเลยทำอันนี้มาให้<br>หวังว่าจะถูกใจนะ ❁</p><button class="btn" onclick="showScreen(2)">กดตรงเน้ 。。。</button><p class="tiny">豚のために 🐽♡</p></div></section>
@@ -28,6 +97,13 @@ function openLetter(){document.getElementById('env').classList.add('open');setTi
 function heart(){const el=document.createElement('span');el.className='float';el.textContent=['💗','💖','🐽','✨','🌸'][Math.floor(Math.random()*5)];el.style.left=Math.random()*100+'vw';el.style.fontSize=(18+Math.random()*22)+'px';el.style.animationDuration=(4+Math.random()*4)+'s';document.body.appendChild(el);setTimeout(()=>el.remove(),8500)}
 let heartTimer=setInterval(heart,850);function burstHearts(){for(let i=0;i<18;i++)setTimeout(heart,i*90)}
 const song=document.getElementById('song'),musicBtn=document.getElementById('musicBtn');musicBtn.addEventListener('click',async()=>{try{if(song.paused){await song.play();musicBtn.textContent='♫ ปิดเพลง'}else{song.pause();musicBtn.textContent='♫ เปิดเพลง'}}catch(e){alert('ถ้าต้องการเปิดเพลง ให้อัปโหลดไฟล์เพลงชื่อ love-song.mp3 ไว้ข้าง ๆ index.html ก่อนนะ 💗')}});
+const curtainButton = document.getElementById('curtainButton');
+const curtainElement = document.getElementById('curtain');
+
+curtainButton.addEventListener('click', () => {
+  curtainElement.classList.add('open');
+  curtainButton.style.display = 'none';
+});
 </script>
 </body>
 </html>
